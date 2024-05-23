@@ -1,4 +1,4 @@
-const BASE = "http://localhost:8080";
+const BASE = "http://localhost:8080/api";
 
 export const backendPaths = {
     PROJECT: `${BASE}/project`,

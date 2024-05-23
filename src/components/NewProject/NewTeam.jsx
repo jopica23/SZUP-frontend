@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {backendPaths} from "../../api/backendPaths.js";
 
+// eslint-disable-next-line react/prop-types
 export default function NewTeam({ index, team, handleTeamNameChange, handleTeamLeaderChange, removeTeam }) {
     const [users, setAllUsers] = useState([]);
 
@@ -19,10 +20,12 @@ export default function NewTeam({ index, team, handleTeamNameChange, handleTeamL
         fetchUsers();
     }, []);
 
+    //console.log(users)
+
     return (
         <div className="flex flex-col border p-2 my-2">
             <div className="flex flex-row mb-2">
-                <label>Naziv tima: </label>
+                <label className="mr-3">Naziv tima: </label>
                 <input
                     type="text"
                     value={team.teamName}
@@ -41,8 +44,8 @@ export default function NewTeam({ index, team, handleTeamNameChange, handleTeamL
                 >
                     <option value="" disabled>Odaberi</option>
                     {users.map((user) => (
-                        <option key={user.user_id} value={user.user_id}>
-                            {user.first_name + " " + user.last_name}
+                        <option key={user.id} value={user.id}>
+                            {user.firstName + " " + user.lastName}
                         </option>
                     ))}
                 </select>
@@ -56,51 +59,3 @@ export default function NewTeam({ index, team, handleTeamNameChange, handleTeamL
 
 
 
-// import {useEffect, useState} from "react";
-// import axios from "axios";
-// import {backendPaths} from "../../api/backendPaths.js";
-//
-//
-// export default function NewTeam(teams, removeTeam, handleTeamLeaderChange){
-//
-//     const[users, setAllUsers] = useState([])
-//     const[teamLeader, setTeamLeader] = useState("")
-//
-//
-//     useEffect(() => {
-//         const fetchUsers = async () => {
-//             try {
-//                 const response = await axios.get(backendPaths.ALL_USERS);
-//                 setAllUsers(response.data);
-//                 console.log('Users fetched successfully');
-//             } catch (error) {
-//                 console.error('Error fetching users:', error);
-//             }
-//         };
-//
-//         fetchUsers();
-//     }, []);
-//
-//
-//
-//     return(
-//         <div>
-//             <div className="flex flex-row">
-//                 <label>Naziv tima: </label>
-//                 <input type="text"></input>
-//             </div>
-//             <div>
-//                 <label>Voditelj tima: </label>
-//                 <select value={teamLeader} onChange={handleTeamLeaderChange} required>
-//                     <option value="" disabled>Odaberi</option>
-//                     {users.map((user) => (
-//                         <option key={user.user_id} value={user.user_id}>
-//                             {user.first_name + " " + user.last_name}
-//                         </option>
-//                     ))}
-//                 </select>
-//             </div>
-//
-//         </div>
-//     )
-// }

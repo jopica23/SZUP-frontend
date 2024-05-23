@@ -9,13 +9,13 @@ export default function NewProject() {
     const [teams, setTeams] = useState([
         {
             teamName: '',
-            teamLeader: 0
+            teamLeaderId: 0
         }
     ]);
 
     useEffect(() => {
         const currUser = JSON.parse(localStorage.getItem("currentUser"));
-        if (currUser) setProjectLeader(currUser);
+        setProjectLeader(currUser);
     }, []);
 
     const handleProjectNameChange = (e) => setProjectName(e.target.value);
@@ -28,22 +28,24 @@ export default function NewProject() {
 
     const handleTeamLeaderChange = (index, value) => {
         const newTeams = [...teams];
-        newTeams[index].teamLeader = value;
+        newTeams[index].teamLeaderId = value;
         setTeams(newTeams);
     };
 
     const addTeam = () => {
-        setTeams([...teams, { teamName: '', teamLeader: '' }]);
+        setTeams([...teams, { teamName: '', teamLeaderId: '' }]);
     };
 
     const removeTeam = (index) => {
+        console.log(index)
         const newTeams = teams.filter((_, i) => i !== index);
         setTeams(newTeams);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const payload = { projectName, projectLeader, teams };
+        const payload = {projectName:projectName, createdById: projectLeader, teams: teams};
+        console.log(payload)
         try {
             const response = await axios.post(backendPaths.NEW_PROJECT, payload);
             console.log('Project created successfully:', response.data);
