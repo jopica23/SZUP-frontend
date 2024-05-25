@@ -5,11 +5,13 @@ import {useEffect, useState} from "react";
 
 export default function Projects(){
 
-    const [currUser, setCurrUser]  = useState(0)
+    const [currUser, setCurrUser]  = useState(1)
 
     useEffect(() => {
         const currUser = JSON.parse(localStorage.getItem("currentUser"));
-        setCurrUser(currUser);
+        if(currUser){
+            setCurrUser(currUser);
+        }
     }, []);
 
     return(

@@ -19,8 +19,6 @@ export default function NewTeam({ index, team, handleTeamNameChange, handleTeamL
         fetchUsers();
     }, []);
 
-    //console.log(users)
-
     return (
         <div className="flex flex-col border p-2 my-2">
             <div className="flex flex-row mb-2">
