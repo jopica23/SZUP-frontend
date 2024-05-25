@@ -30,9 +30,17 @@ export default function Project() {
         const fetchProject = async () => {
             try {
                 const response = await axios.get(`${backendPaths.PROJECT}/${id}/user/${currUser}`);
-                console.log(response.data);
-                setProject(response.data);
-                setUserRights(response.data.userRightsResponseDTO)
+                const project = response.data
+                const userRights = project.userRightsResponseDTO
+                setProject(project);
+                setUserRights(userRights)
+                if (userRights.canModifyProject){
+                    setActive(0)
+                }else if (userRights.canModifyTeam){
+                    setActive(1)
+                }else {
+                    setActive(2)
+                }
             } catch (error) {
                 console.error('Error fetching project:', error);
             }
@@ -53,8 +61,8 @@ export default function Project() {
                 <Tab active={active} setActive={setActive} userRights={userRights}/>
             </div>
             <div>
-                {active === 0 && <ProjectLeaderPanel/>}
-                {active === 1 &&
+                {active === 0 && userRights.canModifyProject && <ProjectLeaderPanel teams={project.teams} projectName={project.projectName}/>}
+                {active === 1 && userRights.canModifyTeam &&
                     <TeamLeaderPanel
                         myTeam={project.teamLeaderOf}
                         projectId={project.id}
