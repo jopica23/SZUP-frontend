@@ -1,15 +1,15 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {backendPaths, getAddMemberPath, getRemoveMemberPath} from "../../api/backendPaths.js";
+import TeamMemberRow from "./TeamMemberRow.jsx";
 
 
-export default function Team({team, canModify, projectId, userId}) {
+export default function Team({team, projectId, userId}) {
     const {id: teamId, teamName, teamMembers} = team
     const leader = teamMembers.find((u) => u.isLeader === true);
     const [users, setAllUsers] = useState([]);
     const [selectedMember, setSelectedMember] = useState("");
     const [teamMembersState, setTeamMembers] = useState(team.teamMembers)
-
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -53,46 +53,22 @@ export default function Team({team, canModify, projectId, userId}) {
     };
 
     return (
-        <div className="border border-orange-300">
-            <p>Naziv tima: <span>{teamName}</span></p>
-            <p>Voditelj tima: <span>{leader.firstName + " " + leader.lastName}</span></p>
-            <div className="flex flex-row mb-2">
-                <label>Dodaj člana: </label>
-                <select
-                    value={selectedMember}
-                    onChange={(e) => setSelectedMember(e.target.value)}
-                    className="border-2 border-gray-700 w-72 ml-2"
-                >
-                    <option value="" disabled>Odaberi</option>
-                    {users.map((user) => (
-                        <option key={user.id} value={user.id}>
-                            {user.firstName + " " + user.lastName}
-                        </option>
-                    ))}
-                </select>
-                <button
-                    onClick={() => handleAddingMembers(selectedMember)}
-                    className="ml-2 px-4 py-2 bg-blue-500 text-white"
-                >
-                    Dodaj
-                </button>
+        <div className="m-2">
+            <div className="block rounded-lg text-center shadow-secondary-1 text-surface">
+                <div className="border-b-2 border-neutral-100 px-6 py-3">
+                    {team.teamName}
+                </div>
+                <div className="p-6">
+                    {team.teamMembers && team.teamMembers.length > 0 &&
+                        team.teamMembers.map(member => <TeamMemberRow member={member} handleRemove={handleRemoveMember}/>)
+
+                    }
+                </div>
+                <div
+                    className="border-t-2 border-neutral-100 px-6 py-3 dark:border-white/10 text-surface/75 dark:text-neutral-300">
+
+                </div>
             </div>
-
-
-            <div className="flex flex-col ml-24">
-                {teamMembersState.map(m => (
-                    <li key={m.id} className="mb-2 flex justify-between items-center">
-                        {m.firstName + " " + m.lastName}
-                        <button
-                            onClick={() => handleRemoveMember(m.id)}
-                            className="ml-4 px-2 py-1 bg-red-500 text-white"
-                        >
-                            x
-                        </button>
-                    </li>
-                ))}
-            </div>
-
         </div>
     )
 }
