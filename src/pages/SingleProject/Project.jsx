@@ -1,7 +1,6 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import TeamCard from "../../components/TeamUpdate/TeamCard.jsx";
 import {backendPaths} from "../../api/backendPaths.js";
 import Tab from "../../components/Tab/Tab.jsx";
 import ProjectLeaderPanel from "./ProjectLeaderPanel.jsx";
@@ -34,11 +33,11 @@ export default function Project() {
                 const userRights = project.userRightsResponseDTO
                 setProject(project);
                 setUserRights(userRights)
-                if (userRights.canModifyProject){
+                if (userRights.canModifyProject) {
                     setActive(0)
-                }else if (userRights.canModifyTeam){
+                } else if (userRights.canModifyTeam) {
                     setActive(1)
-                }else {
+                } else {
                     setActive(2)
                 }
             } catch (error) {
@@ -61,7 +60,9 @@ export default function Project() {
                 <Tab active={active} setActive={setActive} userRights={userRights}/>
             </div>
             <div>
-                {active === 0 && userRights.canModifyProject && <ProjectLeaderPanel setProject={setProject} projectId={project.id} teams={project.teams} projectName={project.projectName}/>}
+                {active === 0 && userRights.canModifyProject &&
+                    <ProjectLeaderPanel setProject={setProject} projectId={project.id} teams={project.teams}
+                                        projectName={project.projectName}/>}
                 {active === 1 && userRights.canModifyTeam &&
                     <TeamLeaderPanel
                         myTeam={project.teamLeaderOf}
@@ -69,7 +70,7 @@ export default function Project() {
                         currUser={currUser}
                     />
                 }
-                {active === 2 && <TaskPanel/>}
+                {active === 2 && <TaskPanel projectId={project.id} userId={currUser}/>}
             </div>
         </div>
     );
