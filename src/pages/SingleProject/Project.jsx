@@ -61,7 +61,7 @@ export default function Project() {
                 <Tab active={active} setActive={setActive} userRights={userRights}/>
             </div>
             <div>
-                {active === 0 && userRights.canModifyProject && <ProjectLeaderPanel teams={project.teams} projectName={project.projectName}/>}
+                {active === 0 && userRights.canModifyProject && <ProjectLeaderPanel setProject={setProject} projectId={project.id} teams={project.teams} projectName={project.projectName}/>}
                 {active === 1 && userRights.canModifyTeam &&
                     <TeamLeaderPanel
                         myTeam={project.teamLeaderOf}

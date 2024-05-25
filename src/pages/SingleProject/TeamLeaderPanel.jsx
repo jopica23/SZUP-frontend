@@ -9,9 +9,10 @@ export default function TeamLeaderPanel({myTeam, projectId, currUser}) {
             <div className="wrapper">
                 <div>
                     <TeamCard key={myTeam.teamName}
-                          team={myTeam}
-                          projectId={projectId}
-                          userId={currUser}
+                              team={myTeam}
+                              projectId={projectId}
+                              userId={currUser}
+                              setProject={null}
                     />
                 </div>
             </div>

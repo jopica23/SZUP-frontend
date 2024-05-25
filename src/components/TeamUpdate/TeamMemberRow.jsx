@@ -11,7 +11,10 @@ export default function TeamMemberRow({member, handleRemove}) {
                 {member.firstName + " " + member.lastName}
             </div>
             <div className="ml-4">
-                <FontAwesomeIcon icon={faUserMinus} className="cursor-pointer" onClick={() => handleRemove(member.id)}/>
+                {handleRemove &&
+                    <FontAwesomeIcon icon={faUserMinus} className="cursor-pointer"
+                                     onClick={() => handleRemove(member.id)}/>
+                }
             </div>
         </div>
 
