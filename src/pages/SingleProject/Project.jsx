@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import Team from "../../components/TeamUpdate/Team.jsx";
+import TeamCard from "../../components/TeamUpdate/TeamCard.jsx";
 import {backendPaths} from "../../api/backendPaths.js";
 import Tab from "../../components/Tab/Tab.jsx";
 import ProjectLeaderPanel from "./ProjectLeaderPanel.jsx";
