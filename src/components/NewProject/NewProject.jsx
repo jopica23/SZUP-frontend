@@ -3,9 +3,9 @@ import axios from 'axios';
 import {backendPaths} from "../../api/backendPaths.js";
 import NewTeam from "./NewTeam.jsx";
 
-export default function NewProject() {
+export default function NewProject({projectLeader}) {
     const [projectName, setProjectName] = useState('');
-    const [projectLeader, setProjectLeader] = useState();
+    //const [projectLeader, setProjectLeader] = useState();
     const [teams, setTeams] = useState([
         {
             teamName: '',
@@ -13,10 +13,7 @@ export default function NewProject() {
         }
     ]);
 
-    useEffect(() => {
-        const currUser = JSON.parse(localStorage.getItem("currentUser"));
-        setProjectLeader(currUser);
-    }, []);
+
 
     const handleProjectNameChange = (e) => setProjectName(e.target.value);
 
@@ -28,7 +25,7 @@ export default function NewProject() {
 
     const handleTeamLeaderChange = (index, value) => {
         const newTeams = [...teams];
-        newTeams[index].teamLeaderId = value;
+        newTeams[index].teamLeaderId = value
         setTeams(newTeams);
     };
 
@@ -52,34 +49,45 @@ export default function NewProject() {
         } catch (error) {
             console.error('Error creating project:', error);
         }
+        setProjectName('')
+        setTeams([
+            {
+                teamName: '',
+                teamLeaderId: 0
+            }
+        ])
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col w-1/2 border-4">
-            <div className="flex">
-                <label>Naziv projekta:</label>
-                <input
-                    className="border-2 border-gray-700 w-72 ml-2"
-                    type="text"
-                    value={projectName}
-                    onChange={handleProjectNameChange}
-                    required
-                />
-            </div>
+        <div className="w-1/3">
+            <h1>STVORI NOVI PROJEKT</h1>
+            <form onSubmit={handleSubmit} className="flex flex-col  border-4">
+                <div className="flex">
+                    <label className="font-bold">Naziv projekta:</label>
+                    <input
+                        className="border-2 border-gray-700 w-72 ml-2"
+                        type="text"
+                        value={projectName}
+                        onChange={handleProjectNameChange}
+                        required
+                    />
+                </div>
 
-            {teams.map((team, index) => (
-                <NewTeam
-                    key={index}
-                    index={index}
-                    team={team}
-                    handleTeamNameChange={(value) => handleTeamNameChange(index, value)}
-                    handleTeamLeaderChange={(value) => handleTeamLeaderChange(index, value)}
-                    removeTeam={() => removeTeam(index)}
-                />
-            ))}
+                {teams.map((team, index) => (
+                    <NewTeam
+                        key={index}
+                        index={index}
+                        team={team}
+                        handleTeamNameChange={(value) => handleTeamNameChange(index, value)}
+                        handleTeamLeaderChange={(value) => handleTeamLeaderChange(index, value)}
+                        removeTeam={() => removeTeam(index)}
+                    />
+                ))}
 
-            <button type="button" className="bg-amber-500" onClick={addTeam}> + Dodaj tim </button>
-            <button type="submit" className="bg-blue-300"> Spremi projekt</button>
-        </form>
+                <button type="button" className="bg-blue-300" onClick={addTeam}> + Dodaj tim</button>
+                <button type="submit" className="bg-amber-500"> Spremi projekt</button>
+            </form>
+        </div>
+
     );
 };
