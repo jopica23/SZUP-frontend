@@ -1,19 +1,17 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import axios from 'axios';
 import {backendPaths} from "../../api/backendPaths.js";
 import NewTeam from "./NewTeam.jsx";
 
+// eslint-disable-next-line react/prop-types
 export default function NewProject({projectLeader}) {
     const [projectName, setProjectName] = useState('');
-    //const [projectLeader, setProjectLeader] = useState();
     const [teams, setTeams] = useState([
         {
             teamName: '',
-            teamLeaderId: 0
+            teamLeaderId: 1
         }
     ]);
-
-
 
     const handleProjectNameChange = (e) => setProjectName(e.target.value);
 
@@ -34,7 +32,6 @@ export default function NewProject({projectLeader}) {
     };
 
     const removeTeam = (index) => {
-        console.log(index)
         const newTeams = teams.filter((_, i) => i !== index);
         setTeams(newTeams);
     };
@@ -53,7 +50,7 @@ export default function NewProject({projectLeader}) {
         setTeams([
             {
                 teamName: '',
-                teamLeaderId: 0
+                teamLeaderId: 1
             }
         ])
     };
@@ -90,4 +87,4 @@ export default function NewProject({projectLeader}) {
         </div>
 
     );
-};
+}

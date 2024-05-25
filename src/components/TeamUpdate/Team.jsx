@@ -3,8 +3,8 @@ import axios from "axios";
 import {backendPaths, getAddMemberPath, getRemoveMemberPath} from "../../api/backendPaths.js";
 
 
-export default function Team({team, canModify, projectId, userId}){
-    const { id:teamId, teamName, teamMembers} = team
+export default function Team({team, canModify, projectId, userId}) {
+    const {id: teamId, teamName, teamMembers} = team
     const leader = teamMembers.find((u) => u.isLeader === true);
     const [users, setAllUsers] = useState([]);
     const [selectedMember, setSelectedMember] = useState("");
@@ -29,11 +29,11 @@ export default function Team({team, canModify, projectId, userId}){
 
         try {
             const url = getAddMemberPath(projectId, teamId, parsedMemberId, userId)
-            const response = await axios.put(url);
-            let newMember = users.find(u => u.id === parsedMemberId);
-            let updateMembers = [...teamMembersState, newMember ]
+            const response = await axios.post(url);
+            const newMember = response.data.teamMembers[response.data.teamMembers.length - 1]
+            let updateMembers = [...teamMembersState, newMember]
             setTeamMembers(updateMembers)
-            console.log('Member added successfully:', response.data);
+            console.log('Member added successfully:');
         } catch (error) {
             console.error('Error adding member:', error);
         }
@@ -44,18 +44,13 @@ export default function Team({team, canModify, projectId, userId}){
 
         try {
             const url = getRemoveMemberPath(projectId, teamId, parsedMemberId, userId);
-            const response = await axios.put(url);
+            await axios.delete(url);
             let updatedMembers = teamMembersState.filter(m => m.id !== parsedMemberId);
             setTeamMembers(updatedMembers);
-            console.log('Member removed successfully:', response.data);
         } catch (error) {
             console.error('Error removing member:', error);
         }
     };
-
-
-
-
 
     return (
         <div className="border border-orange-300">
