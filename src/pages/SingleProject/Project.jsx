@@ -13,7 +13,7 @@ export default function Project() {
     const [currUser, setCurrUser] = useState(undefined);
     const [project, setProject] = useState(undefined);
     const [userRights, setUserRights] = useState(undefined)
-    const [active, setActive] = useState(1)
+    const [active, setActive] = useState(2)
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("currentUser"));
