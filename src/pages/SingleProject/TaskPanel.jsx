@@ -85,7 +85,7 @@ export default function TaskPanel({projectId, userId}) {
 
             {isModalActive &&
                 <TaskModal isUpdate={updateTask != null} task={updateTask} closeModal={closeModal}
-                           projectId={projectId} userId={userId}/>}
+                           projectId={projectId} userId={userId} setCreatedTasks={setCreatedTasks}/>}
         </div>
     );
 }

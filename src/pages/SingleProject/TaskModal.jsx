@@ -10,9 +10,7 @@ import {
     taskRUDPath, updateSolverPath
 } from "../../api/backendPaths.js";
 
-export default function TaskModal({task, closeModal, projectId, userId, isUpdate}) {
-
-
+export default function TaskModal({task, closeModal, projectId, userId, isUpdate, setCreatedTasks}) {
     const [taskName, setTaskName] = useState(task ? task.taskName : "");
     const [taskEndDate, setTaskEndDate] = useState(task ? task.taskEndDate : "");
     const [description, setDescription] = useState(task ? task.description : "");
@@ -20,7 +18,7 @@ export default function TaskModal({task, closeModal, projectId, userId, isUpdate
     const [taskPriorityId, setTaskPriorityId] = useState(task ? task.priority.id : 0);
     const [statusId, setStatusId] = useState(task ? task.currentStatus.id : 0);
     const [teams, setTeams] = useState([]);
-    const [selectedTeam, setSelectedTeam] = useState(task.solverTeamId);
+    const [selectedTeam, setSelectedTeam] = useState(task ? task.solverTeamId : null);
     const [teamMembers, setTeamMembers] = useState([]);
     const [priorities, setPriorities] = useState([])
     const [statuses, setStatuses] = useState([])
@@ -63,7 +61,12 @@ export default function TaskModal({task, closeModal, projectId, userId, isUpdate
 
             try {
                 axios.post(createTaskPath(projectId, selectedTeam), newTask)
-                    .then(() => closeModal())
+                    .then(res => res.data)
+                    .then(data => {
+                        closeModal()
+                        console.log(data)
+                        setCreatedTasks(old => [...old, data])
+                    })
             } catch (e) {
                 console.log(e)
             }
