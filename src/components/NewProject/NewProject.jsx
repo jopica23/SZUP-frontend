@@ -1,10 +1,13 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import axios from 'axios';
 import {backendPaths} from "../../api/backendPaths.js";
 import NewTeam from "./NewTeam.jsx";
+import {CurrUserContext} from "../../context/CurrUserContext.jsx";
 
 // eslint-disable-next-line react/prop-types
-export default function NewProject({projectLeader}) {
+export default function NewProject() {
+    const { currUser : projectLeader} = useContext(CurrUserContext);
+
     const [projectName, setProjectName] = useState('');
     const [teams, setTeams] = useState([
         {

@@ -1,12 +1,13 @@
-import React from "react";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faEdit, faTrash} from '@fortawesome/free-solid-svg-icons';
 
 
+// eslint-disable-next-line react/prop-types
 export default function TaskTable({tasks, setUpdateTask, deleteHandle}) {
     return (
         <div className="p-4">
-            <p>Stvoreni zadatci</p>
+            {setUpdateTask === null ? <p>Zadaci za mene </p> :  <p>Stvoreni zadaci</p> }
+            {/* eslint-disable-next-line react/prop-types */}
             {tasks.map((task) => (
                 <div
                     key={task.id}
