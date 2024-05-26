@@ -3,7 +3,7 @@ import axios from "axios";
 import {backendPaths} from "../../api/backendPaths.js";
 
 // eslint-disable-next-line react/prop-types
-export default function NewTeam({ index, team, handleTeamNameChange, handleTeamLeaderChange, removeTeam }) {
+export default function NewTeam({team, handleTeamNameChange, handleTeamLeaderChange, removeTeam }) {
     const [users, setAllUsers] = useState([]);
 
     useEffect(() => {

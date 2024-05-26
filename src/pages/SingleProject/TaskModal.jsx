@@ -10,6 +10,7 @@ import {
     taskRUDPath, updateSolverPath
 } from "../../api/backendPaths.js";
 
+// eslint-disable-next-line react/prop-types
 export default function TaskModal({task, closeModal, projectId, userId, isUpdate, setCreatedTasks}) {
     const [taskName, setTaskName] = useState(task ? task.taskName : "");
     const [taskEndDate, setTaskEndDate] = useState(task ? task.taskEndDate : "");
@@ -71,12 +72,18 @@ export default function TaskModal({task, closeModal, projectId, userId, isUpdate
                 console.log(e)
             }
         } else {
+            let finalTaskEndDate = null
+            if(taskEndDate && taskEndDate !== '' && !taskEndDate.includes('T')){
+                let split = taskEndDate.split(" ")
+                finalTaskEndDate = split[0] + 'T' + split[1]
+            }
             const updateData = {
                 taskName,
-                taskEndDate: taskEndDate === '' ? null : taskEndDate,
+                taskEndDate: finalTaskEndDate,
                 description,
                 priorityId: taskPriorityId
             }
+
 
             await axios.put(taskRUDPath(task.id), updateData)
 
@@ -91,12 +98,14 @@ export default function TaskModal({task, closeModal, projectId, userId, isUpdate
 
             if (taskSolverId !== task.taskSolver.id){
                 const statusUpdateData = {
-                    taskId: task.id,
-                    updatedByUserId: userId,
-                    newTaskStatusId: statusId
+                    newTeamId: selectedTeam,
+                    newTaskSolverId: taskSolverId,
+                    changedById: userId
                 }
                 await axios.put(updateSolverPath(projectId, task.id), statusUpdateData)
             }
+
+            closeModal()
         }
 
     }
@@ -124,7 +133,7 @@ return (
             <div className="p-4 md:p-5 space-y-4">
                 <div>
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="taskName">
-                        Task Name
+                        Naslov zadatka
                     </label>
                     <input
                         id="taskName"
@@ -137,7 +146,7 @@ return (
                 </div>
                 <div>
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="taskEndDate">
-                        Task End Date
+                        Krajnji rok
                     </label>
                     <input
                         id="taskEndDate"
@@ -150,7 +159,7 @@ return (
                 </div>
                 <div>
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
-                        Description
+                        Opis
                     </label>
                     <textarea
                         id="description"
@@ -195,7 +204,7 @@ return (
                 }
                 <div>
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="selectedTeam">
-                        Team
+                        Tim
                     </label>
                     <select
                         id="selectedTeam"
@@ -214,7 +223,7 @@ return (
                 </div>
                 <div>
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="taskSolverId">
-                        Task Solver
+                        Izvršitelj zadatka
                     </label>
                     <select
                         id="taskSolverId"

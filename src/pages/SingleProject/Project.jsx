@@ -1,30 +1,23 @@
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {backendPaths} from "../../api/backendPaths.js";
 import Tab from "../../components/Tab/Tab.jsx";
 import ProjectLeaderPanel from "./ProjectLeaderPanel.jsx";
 import TeamLeaderPanel from "./TeamLeaderPanel.jsx";
 import TaskPanel from "./TaskPanel.jsx";
+import {CurrUserContext} from "../../context/CurrUserContext.jsx";
 
 export default function Project() {
-    const {id} = useParams(); // This hook gives you access to the `id` parameter from the URL
-    const [currUser, setCurrUser] = useState(undefined);
+    const {id} = useParams();
+    const { currUser } = useContext(CurrUserContext);
     const [project, setProject] = useState(undefined);
     const [userRights, setUserRights] = useState(undefined)
     const [active, setActive] = useState(2)
 
-    useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem("currentUser"));
-        if (currUser) {
-            setCurrUser(storedUser);
-        } else {
-            setCurrUser(1)
-        }
-    }, []);
-
 
     useEffect(() => {
+        console.log("promjena usera: ", currUser)
 
         const fetchProject = async () => {
             try {
@@ -44,6 +37,7 @@ export default function Project() {
                 console.error('Error fetching project:', error);
             }
         };
+
         if (currUser) {
             fetchProject();
         }

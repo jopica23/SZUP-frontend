@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import { backendPaths } from '../../api/backendPaths.js';
 import {routes} from "../../api/paths.js";
 import {Link} from 'react-router-dom';
+import {CurrUserContext} from "../../context/CurrUserContext.jsx";
 
 
 
@@ -13,7 +14,8 @@ projecList.push({id: 2, projectName: "Treci projekt" , createdById: 2 })
 projecList.push({id: 3, projectName: "Cetvrti projekt" , createdById: 1 })
 projecList.push({id: 4, projectName: "Peti projekt" , createdById: 1 })
 
-export default function ProjectList({currUserId}) {
+export default function ProjectList() {
+    const { currUser : currUserId } = useContext(CurrUserContext);
     const [projects, setProjects] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredProjects, setFilteredProjects] = useState([]);
@@ -30,7 +32,7 @@ export default function ProjectList({currUserId}) {
             }
         };
         fetchProjects();
-    }, []);
+    }, [currUserId]);
 
     useEffect(() => {
         const results = projects.filter(project =>
